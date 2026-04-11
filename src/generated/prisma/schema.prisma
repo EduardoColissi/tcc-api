@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum WorkModel {
+  ONSITE
+  HYBRID
+  HOME_OFFICE
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TaskType {
+  PROFESSIONAL
+  PERSONAL
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  name          String
+  email         String   @unique
+  cpf           String   @unique
+  passwordHash  String   @map("password_hash")
+  birthDate     DateTime @map("birth_date") @db.Date
+  emailVerified Boolean  @default(false) @map("email_verified")
+  emailToken    String?  @map("email_token")
+
+  // Onboarding
+  jobTitle           String?    @map("job_title")
+  workModel          WorkModel?
+  company            String?
+  onboardingComplete Boolean    @default(false) @map("onboarding_complete")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  tasks            Task[]
+  pomodoroSessions PomodoroSession[]
+
+  @@map("users")
+}
+
+model Task {
+  id          Int          @id @default(autoincrement())
+  userId      Int          @map("user_id")
+  title       String
+  description String?
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(MEDIUM)
+  type        TaskType     @default(PROFESSIONAL)
+  dueDate     DateTime?    @map("due_date") @db.Date
+  position    Int          @default(0)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pomodoroSessions PomodoroSession[]
+
+  @@index([userId])
+  @@index([userId, status])
+  @@map("tasks")
+}
+
+model PomodoroSession {
+  id              Int       @id @default(autoincrement())
+  userId          Int       @map("user_id")
+  taskId          Int       @map("task_id")
+  startedAt       DateTime  @default(now()) @map("started_at")
+  endedAt         DateTime? @map("ended_at")
+  durationMinutes Int?      @map("duration_minutes")
+  completed       Boolean   @default(false)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([taskId])
+  @@map("pomodoro_sessions")
+}

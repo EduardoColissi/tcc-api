@@ -1,0 +1,33 @@
+import type { User } from '@prisma/client';
+import { PrismaService } from '../../prisma/prisma.service';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+export declare class UsersService {
+    private prisma;
+    constructor(prisma: PrismaService);
+    getProfile(user: User): {
+        name: string;
+        email: string;
+        birthDate: Date;
+        id: number;
+        emailVerified: boolean;
+        jobTitle: string | null;
+        workModel: import(".prisma/client").$Enums.WorkModel | null;
+        company: string | null;
+        onboardingComplete: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    };
+    updateProfile(user: User, dto: UpdateProfileDto): Promise<{
+        name: string;
+        email: string;
+        birthDate: Date;
+        id: number;
+        emailVerified: boolean;
+        jobTitle: string | null;
+        workModel: import(".prisma/client").$Enums.WorkModel | null;
+        company: string | null;
+        onboardingComplete: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
+}
