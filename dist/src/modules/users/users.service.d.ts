@@ -6,9 +6,9 @@ export declare class UsersService {
     constructor(prisma: PrismaService);
     getProfile(user: User): {
         name: string;
+        id: number;
         email: string;
         birthDate: Date;
-        id: number;
         emailVerified: boolean;
         jobTitle: string | null;
         workModel: import(".prisma/client").$Enums.WorkModel | null;
@@ -19,9 +19,9 @@ export declare class UsersService {
     };
     updateProfile(user: User, dto: UpdateProfileDto): Promise<{
         name: string;
+        id: number;
         email: string;
         birthDate: Date;
-        id: number;
         emailVerified: boolean;
         jobTitle: string | null;
         workModel: import(".prisma/client").$Enums.WorkModel | null;

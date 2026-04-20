@@ -1,4 +1,4 @@
-import { IsEnum, IsNumber, IsPositive } from 'class-validator';
+import { IsBoolean, IsEnum, IsNumber, IsOptional, IsPositive } from 'class-validator';
 
 export enum SessionTypeDto {
   FOCUS = 'FOCUS',
@@ -16,4 +16,8 @@ export class CreateSessionDto {
   @IsNumber()
   @IsPositive()
   cycleNumber: number;
+
+  @IsOptional()
+  @IsBoolean()
+  monitoringEnabled?: boolean;
 }

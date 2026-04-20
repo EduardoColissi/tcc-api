@@ -1,12 +1,11 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import type { User } from '@prisma/client';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import { OnboardingGuard } from '../../common/guards/onboarding.guard';
+import { CreateFocusEventsDto } from './dto/create-focus-event.dto';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { EndSessionDto } from './dto/end-session.dto';
 import { PomodoroService } from './pomodoro.service';
 
-@UseGuards(OnboardingGuard)
 @Controller('pomodoro')
 export class PomodoroController {
   constructor(private pomodoro: PomodoroService) {}
@@ -44,5 +43,27 @@ export class PomodoroController {
     @Query('taskId', ParseIntPipe) taskId: number,
   ) {
     return this.pomodoro.getStats(user.id, taskId);
+  }
+
+  @Get('history')
+  getFocusHistory(@CurrentUser() user: User) {
+    return this.pomodoro.getFocusHistory(user.id);
+  }
+
+  @Post('sessions/:id/focus-events')
+  logFocusEvents(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: CreateFocusEventsDto,
+  ) {
+    return this.pomodoro.logFocusEvents(user.id, id, dto);
+  }
+
+  @Get('sessions/:id/focus-summary')
+  getFocusSummary(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.pomodoro.getSessionFocusSummary(user.id, id);
   }
 }

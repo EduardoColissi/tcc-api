@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PomodoroController = void 0;
 const common_1 = require("@nestjs/common");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
-const onboarding_guard_1 = require("../../common/guards/onboarding.guard");
+const create_focus_event_dto_1 = require("./dto/create-focus-event.dto");
 const create_session_dto_1 = require("./dto/create-session.dto");
 const end_session_dto_1 = require("./dto/end-session.dto");
 const pomodoro_service_1 = require("./pomodoro.service");
@@ -38,6 +38,15 @@ let PomodoroController = class PomodoroController {
     }
     getStats(user, taskId) {
         return this.pomodoro.getStats(user.id, taskId);
+    }
+    getFocusHistory(user) {
+        return this.pomodoro.getFocusHistory(user.id);
+    }
+    logFocusEvents(user, id, dto) {
+        return this.pomodoro.logFocusEvents(user.id, id, dto);
+    }
+    getFocusSummary(user, id) {
+        return this.pomodoro.getSessionFocusSummary(user.id, id);
     }
 };
 exports.PomodoroController = PomodoroController;
@@ -81,8 +90,31 @@ __decorate([
     __metadata("design:paramtypes", [Object, Number]),
     __metadata("design:returntype", void 0)
 ], PomodoroController.prototype, "getStats", null);
+__decorate([
+    (0, common_1.Get)('history'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], PomodoroController.prototype, "getFocusHistory", null);
+__decorate([
+    (0, common_1.Post)('sessions/:id/focus-events'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number, create_focus_event_dto_1.CreateFocusEventsDto]),
+    __metadata("design:returntype", void 0)
+], PomodoroController.prototype, "logFocusEvents", null);
+__decorate([
+    (0, common_1.Get)('sessions/:id/focus-summary'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number]),
+    __metadata("design:returntype", void 0)
+], PomodoroController.prototype, "getFocusSummary", null);
 exports.PomodoroController = PomodoroController = __decorate([
-    (0, common_1.UseGuards)(onboarding_guard_1.OnboardingGuard),
     (0, common_1.Controller)('pomodoro'),
     __metadata("design:paramtypes", [pomodoro_service_1.PomodoroService])
 ], PomodoroController);

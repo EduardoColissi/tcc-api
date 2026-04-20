@@ -1,4 +1,5 @@
 import type { User } from '@prisma/client';
+import { CreateFocusEventsDto } from './dto/create-focus-event.dto';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { EndSessionDto } from './dto/end-session.dto';
 import { PomodoroService } from './pomodoro.service';
@@ -10,26 +11,28 @@ export declare class PomodoroController {
         createdAt: Date;
         updatedAt: Date;
         type: import(".prisma/client").$Enums.SessionType;
+        cycleNumber: number;
+        startedAt: Date;
+        endedAt: Date | null;
+        durationSeconds: number | null;
+        completed: boolean;
+        monitoringEnabled: boolean;
         userId: number;
         taskId: number;
-        cycleNumber: number;
-        completed: boolean;
-        endedAt: Date | null;
-        startedAt: Date;
-        durationSeconds: number | null;
     }>;
     endSession(user: User, id: number, dto: EndSessionDto): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         type: import(".prisma/client").$Enums.SessionType;
+        cycleNumber: number;
+        startedAt: Date;
+        endedAt: Date | null;
+        durationSeconds: number | null;
+        completed: boolean;
+        monitoringEnabled: boolean;
         userId: number;
         taskId: number;
-        cycleNumber: number;
-        completed: boolean;
-        endedAt: Date | null;
-        startedAt: Date;
-        durationSeconds: number | null;
     }>;
     getActiveSession(user: User): Promise<({
         task: {
@@ -42,29 +45,67 @@ export declare class PomodoroController {
         createdAt: Date;
         updatedAt: Date;
         type: import(".prisma/client").$Enums.SessionType;
+        cycleNumber: number;
+        startedAt: Date;
+        endedAt: Date | null;
+        durationSeconds: number | null;
+        completed: boolean;
+        monitoringEnabled: boolean;
         userId: number;
         taskId: number;
-        cycleNumber: number;
-        completed: boolean;
-        endedAt: Date | null;
-        startedAt: Date;
-        durationSeconds: number | null;
     }) | null>;
     getSessions(user: User, taskId?: number): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         type: import(".prisma/client").$Enums.SessionType;
+        cycleNumber: number;
+        startedAt: Date;
+        endedAt: Date | null;
+        durationSeconds: number | null;
+        completed: boolean;
+        monitoringEnabled: boolean;
         userId: number;
         taskId: number;
-        cycleNumber: number;
-        completed: boolean;
-        endedAt: Date | null;
-        startedAt: Date;
-        durationSeconds: number | null;
     }[]>;
     getStats(user: User, taskId: number): Promise<{
         totalFocusSessions: number;
         totalFocusSeconds: number;
+    }>;
+    getFocusHistory(user: User): Promise<{
+        focusSummary: {
+            total: number;
+            byType: Record<string, {
+                count: number;
+                totalDurationMs: number;
+            }>;
+        };
+        task: {
+            id: number;
+            title: string;
+        };
+        id: number;
+        createdAt: Date;
+        updatedAt: Date;
+        type: import(".prisma/client").$Enums.SessionType;
+        cycleNumber: number;
+        startedAt: Date;
+        endedAt: Date | null;
+        durationSeconds: number | null;
+        completed: boolean;
+        monitoringEnabled: boolean;
+        userId: number;
+        taskId: number;
+    }[]>;
+    logFocusEvents(user: User, id: number, dto: CreateFocusEventsDto): Promise<{
+        inserted: number;
+    }>;
+    getFocusSummary(user: User, id: number): Promise<{
+        sessionId: number;
+        total: number;
+        byType: Record<string, {
+            count: number;
+            totalDurationMs: number;
+        }>;
     }>;
 }

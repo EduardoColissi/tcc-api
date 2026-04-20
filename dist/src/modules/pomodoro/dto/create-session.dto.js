@@ -20,6 +20,7 @@ class CreateSessionDto {
     taskId;
     type;
     cycleNumber;
+    monitoringEnabled;
 }
 exports.CreateSessionDto = CreateSessionDto;
 __decorate([
@@ -36,4 +37,9 @@ __decorate([
     (0, class_validator_1.IsPositive)(),
     __metadata("design:type", Number)
 ], CreateSessionDto.prototype, "cycleNumber", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsBoolean)(),
+    __metadata("design:type", Boolean)
+], CreateSessionDto.prototype, "monitoringEnabled", void 0);
 //# sourceMappingURL=create-session.dto.js.map

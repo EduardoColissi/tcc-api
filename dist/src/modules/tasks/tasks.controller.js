@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TasksController = void 0;
 const common_1 = require("@nestjs/common");
 const current_user_decorator_1 = require("../../common/decorators/current-user.decorator");
-const onboarding_guard_1 = require("../../common/guards/onboarding.guard");
 const create_task_dto_1 = require("./dto/create-task.dto");
 const move_task_dto_1 = require("./dto/move-task.dto");
 const update_task_dto_1 = require("./dto/update-task.dto");
@@ -94,7 +93,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TasksController.prototype, "remove", null);
 exports.TasksController = TasksController = __decorate([
-    (0, common_1.UseGuards)(onboarding_guard_1.OnboardingGuard),
     (0, common_1.Controller)('tasks'),
     __metadata("design:paramtypes", [tasks_service_1.TasksService])
 ], TasksController);

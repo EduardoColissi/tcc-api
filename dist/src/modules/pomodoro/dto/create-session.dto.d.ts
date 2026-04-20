@@ -6,4 +6,5 @@ export declare class CreateSessionDto {
     taskId: number;
     type: SessionTypeDto;
     cycleNumber: number;
+    monitoringEnabled?: boolean;
 }

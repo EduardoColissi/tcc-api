@@ -13,17 +13,9 @@ export class UsersService {
   }
 
   async updateProfile(user: User, dto: UpdateProfileDto) {
-    const onboardingComplete =
-      user.onboardingComplete ||
-      !!(
-        (dto.jobTitle || user.jobTitle) &&
-        (dto.workModel || user.workModel) &&
-        (dto.company || user.company)
-      );
-
     const updated = await this.prisma.user.update({
       where: { id: user.id },
-      data: { ...dto, onboardingComplete },
+      data: { ...dto },
     });
 
     const { passwordHash, emailToken, ...profile } = updated;

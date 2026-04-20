@@ -36,6 +36,15 @@ enum SessionType {
   BREAK
 }
 
+enum FocusEventType {
+  PERSON_ABSENT
+  CELL_PHONE
+  MULTIPLE_PEOPLE
+  HEAD_TURNED
+  LOOKING_DOWN
+  EYES_CLOSED
+}
+
 model User {
   id               Int        @id @default(autoincrement())
   name             String
@@ -92,14 +101,32 @@ model PomodoroSession {
   endedAt         DateTime?   @map("ended_at")
   durationSeconds Int?        @map("duration_seconds")
   completed       Boolean     @default(false)
+  monitoringEnabled Boolean   @default(false) @map("monitoring_enabled")
 
   createdAt       DateTime    @default(now()) @map("created_at")
   updatedAt       DateTime    @updatedAt @map("updated_at")
 
-  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  task            Task        @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task            Task         @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  focusEvents     FocusEvent[]
 
   @@index([userId])
   @@index([taskId])
   @@map("pomodoro_sessions")
+}
+
+model FocusEvent {
+  id         Int             @id @default(autoincrement())
+  sessionId  Int             @map("session_id")
+  type       FocusEventType
+  startedAt  DateTime        @map("started_at")
+  endedAt    DateTime?       @map("ended_at")
+  durationMs Int?            @map("duration_ms")
+  createdAt  DateTime        @default(now()) @map("created_at")
+
+  session    PomodoroSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([sessionId, type])
+  @@map("focus_events")
 }
