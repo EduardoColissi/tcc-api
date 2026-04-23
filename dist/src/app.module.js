@@ -19,6 +19,7 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const users_module_1 = require("./modules/users/users.module");
 const tasks_module_1 = require("./modules/tasks/tasks.module");
 const pomodoro_module_1 = require("./modules/pomodoro/pomodoro.module");
+const health_module_1 = require("./modules/health/health.module");
 const jwt_auth_guard_1 = require("./common/guards/jwt-auth.guard");
 const http_exception_filter_1 = require("./common/filters/http-exception.filter");
 const transform_interceptor_1 = require("./common/interceptors/transform.interceptor");
@@ -37,6 +38,7 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             tasks_module_1.TasksModule,
             pomodoro_module_1.PomodoroModule,
+            health_module_1.HealthModule,
         ],
         providers: [
             { provide: core_1.APP_GUARD, useClass: jwt_auth_guard_1.JwtAuthGuard },

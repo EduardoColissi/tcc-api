@@ -11,28 +11,28 @@ export declare class PomodoroController {
         createdAt: Date;
         updatedAt: Date;
         type: import(".prisma/client").$Enums.SessionType;
-        cycleNumber: number;
+        userId: number;
         startedAt: Date;
         endedAt: Date | null;
-        durationSeconds: number | null;
-        completed: boolean;
-        monitoringEnabled: boolean;
-        userId: number;
         taskId: number;
+        cycleNumber: number;
+        monitoringEnabled: boolean;
+        completed: boolean;
+        durationSeconds: number | null;
     }>;
     endSession(user: User, id: number, dto: EndSessionDto): Promise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         type: import(".prisma/client").$Enums.SessionType;
-        cycleNumber: number;
+        userId: number;
         startedAt: Date;
         endedAt: Date | null;
-        durationSeconds: number | null;
-        completed: boolean;
-        monitoringEnabled: boolean;
-        userId: number;
         taskId: number;
+        cycleNumber: number;
+        monitoringEnabled: boolean;
+        completed: boolean;
+        durationSeconds: number | null;
     }>;
     getActiveSession(user: User): Promise<({
         task: {
@@ -45,28 +45,28 @@ export declare class PomodoroController {
         createdAt: Date;
         updatedAt: Date;
         type: import(".prisma/client").$Enums.SessionType;
-        cycleNumber: number;
+        userId: number;
         startedAt: Date;
         endedAt: Date | null;
-        durationSeconds: number | null;
-        completed: boolean;
-        monitoringEnabled: boolean;
-        userId: number;
         taskId: number;
+        cycleNumber: number;
+        monitoringEnabled: boolean;
+        completed: boolean;
+        durationSeconds: number | null;
     }) | null>;
     getSessions(user: User, taskId?: number): import(".prisma/client").Prisma.PrismaPromise<{
         id: number;
         createdAt: Date;
         updatedAt: Date;
         type: import(".prisma/client").$Enums.SessionType;
-        cycleNumber: number;
+        userId: number;
         startedAt: Date;
         endedAt: Date | null;
-        durationSeconds: number | null;
-        completed: boolean;
-        monitoringEnabled: boolean;
-        userId: number;
         taskId: number;
+        cycleNumber: number;
+        monitoringEnabled: boolean;
+        completed: boolean;
+        durationSeconds: number | null;
     }[]>;
     getStats(user: User, taskId: number): Promise<{
         totalFocusSessions: number;
@@ -88,14 +88,14 @@ export declare class PomodoroController {
         createdAt: Date;
         updatedAt: Date;
         type: import(".prisma/client").$Enums.SessionType;
-        cycleNumber: number;
+        userId: number;
         startedAt: Date;
         endedAt: Date | null;
-        durationSeconds: number | null;
-        completed: boolean;
-        monitoringEnabled: boolean;
-        userId: number;
         taskId: number;
+        cycleNumber: number;
+        monitoringEnabled: boolean;
+        completed: boolean;
+        durationSeconds: number | null;
     }[]>;
     logFocusEvents(user: User, id: number, dto: CreateFocusEventsDto): Promise<{
         inserted: number;
