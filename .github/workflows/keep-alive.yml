@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Ping API
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.API_URL }}/health)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.API_URL }}/api/health)
           echo "HTTP status: $STATUS"
           if [ "$STATUS" != "200" ]; then
             echo "API returned $STATUS"
