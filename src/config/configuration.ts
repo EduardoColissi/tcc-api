@@ -14,11 +14,8 @@ export default () => ({
     refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
   },
   mail: {
-    host: process.env.MAIL_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.MAIL_PORT || '587', 10),
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
-    from: process.env.MAIL_FROM,
+    resendApiKey: process.env.RESEND_API_KEY,
+    from: 'TCC App <onboarding@resend.dev>',
   },
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
 });

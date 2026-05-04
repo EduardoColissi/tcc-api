@@ -1,30 +1,23 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 @Injectable()
 export class MailService {
   private readonly logger = new Logger(MailService.name);
-  private transporter: nodemailer.Transporter;
+  private resend: Resend;
 
   constructor(private config: ConfigService) {
-    this.transporter = nodemailer.createTransport({
-      host: this.config.get('mail.host'),
-      port: this.config.get<number>('mail.port'),
-      secure: false,
-      auth: {
-        user: this.config.get('mail.user'),
-        pass: this.config.get('mail.pass'),
-      },
-    });
+    this.resend = new Resend(this.config.get('mail.resendApiKey'));
   }
 
   async sendConfirmationEmail(to: string, name: string, token: string) {
     const frontendUrl = this.config.get('frontendUrl');
     const url = `${frontendUrl}/confirm-email?token=${token}`;
+    const from = this.config.get<string>('mail.from');
 
-    await this.transporter.sendMail({
-      from: `"TCC App" <eduardocolissiprofissional@gmail.com>`,
+    const { error } = await this.resend.emails.send({
+      from,
       to,
       subject: 'Confirme seu e-mail',
       html: `
@@ -34,6 +27,10 @@ export class MailService {
         <p>O link expira em 24 horas.</p>
       `,
     });
+
+    if (error) {
+      throw new Error(error.message);
+    }
 
     this.logger.log(`Email de confirmação enviado para ${to}`);
   }
