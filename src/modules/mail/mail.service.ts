@@ -14,7 +14,7 @@ export class MailService {
   async sendConfirmationEmail(to: string, name: string, token: string) {
     const frontendUrl = this.config.get('frontendUrl');
     const url = `${frontendUrl}/confirm-email?token=${token}`;
-    const from = this.config.get<string>('mail.from');
+    const from = this.config.get<string>('mail.from')!;
 
     const { error } = await this.resend.emails.send({
       from,
