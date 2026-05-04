@@ -8,7 +8,7 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   getProfile(user: User) {
-    const { passwordHash, emailToken, ...profile } = user;
+    const { passwordHash, ...profile } = user;
     return profile;
   }
 
@@ -18,7 +18,7 @@ export class UsersService {
       data: { ...dto },
     });
 
-    const { passwordHash, emailToken, ...profile } = updated;
+    const { passwordHash, ...profile } = updated;
     return profile;
   }
 }

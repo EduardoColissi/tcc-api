@@ -32,7 +32,6 @@ export class AuthService {
         email: dto.email,
         passwordHash,
         birthDate: new Date(dto.birthDate),
-        emailVerified: true,
       },
     });
 
