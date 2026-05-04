@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Public } from '../../common/decorators/public.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -17,12 +17,6 @@ export class AuthController {
   }
 
   @Public()
-  @Get('confirm/:token')
-  confirmEmail(@Param('token') token: string) {
-    return this.auth.confirmEmail(token);
-  }
-
-  @Public()
   @Post('login')
   login(@Body() dto: LoginDto) {
     return this.auth.login(dto);
@@ -38,11 +32,5 @@ export class AuthController {
   @Post('logout')
   logout() {
     return this.auth.logout();
-  }
-
-  @Public()
-  @Post('resend-confirmation')
-  resendConfirmation(@Body('email') email: string) {
-    return this.auth.resendConfirmation(email);
   }
 }

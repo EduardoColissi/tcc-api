@@ -53,9 +53,6 @@ model User {
   email            String     @unique
   passwordHash     String     @map("password_hash")
   birthDate        DateTime   @map("birth_date") @db.Date
-  emailVerified    Boolean    @default(false) @map("email_verified")
-  emailToken       String?    @map("email_token")
-
   // Onboarding
   jobTitle         String?    @map("job_title")
   workModel        WorkModel?
