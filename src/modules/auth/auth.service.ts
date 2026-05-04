@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -16,6 +17,8 @@ import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
@@ -43,10 +46,11 @@ export class AuthService {
     });
 
     try {
+      this.logger.log(`[MAIL] Enviando e-mail de confirmação para ${user.email}...`);
       await this.mail.sendConfirmationEmail(user.email, user.name, emailToken);
+      this.logger.log(`[MAIL] E-mail enviado com sucesso para ${user.email}`);
     } catch (e) {
-      // Log error but don't fail the registration
-      console.error('Falha ao enviar e-mail de confirmação:', e.message);
+      this.logger.error(`[MAIL] Falha ao enviar e-mail para ${user.email}: ${e.message}`);
     }
 
     return { message: 'Cadastro realizado. Verifique seu e-mail para confirmar a conta.' };
@@ -110,9 +114,11 @@ export class AuthService {
     const emailToken = uuidv4();
     await this.prisma.user.update({ where: { id: user.id }, data: { emailToken } });
     try {
+      this.logger.log(`[MAIL] Reenviando e-mail de confirmação para ${user.email}...`);
       await this.mail.sendConfirmationEmail(user.email, user.name, emailToken);
+      this.logger.log(`[MAIL] E-mail reenviado com sucesso para ${user.email}`);
     } catch (e) {
-      console.error('Falha ao reenviar e-mail:', e.message);
+      this.logger.error(`[MAIL] Falha ao reenviar e-mail para ${user.email}: ${e.message}`);
     }
 
     return { message: 'E-mail de confirmação reenviado.' };
